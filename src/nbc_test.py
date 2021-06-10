@@ -29,7 +29,7 @@ class TestNBC(unittest.TestCase):
     k = 2
 
     # when
-    c = nbc(data=np.vstack((cluster_0, cluster_1)), dimensions=len(cluster_0[0]), k=k, ti_index=True)
+    c = nbc(data=np.vstack((cluster_0, cluster_1)), dimensions=len(cluster_0[0]), k=k, index_type=True)
 
     # assert
     expected_clusters = [0, 0, 0, 1, 1, 1]

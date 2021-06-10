@@ -1,7 +1,9 @@
 from absl import app
 from absl import flags
+import numpy as np
 
 from nbc import nbc
+from utils.save_data import save_data
 from utils.read_data import read_data
 
 FLAGS = flags.FLAGS
@@ -17,7 +19,10 @@ flags.mark_flag_as_required("input")
 
 def main(_):
   df = read_data(FLAGS.input)
-  clusters = nbc(df.values, df.shape[1], FLAGS.k, FLAGS.index_type == 'ti-kn')
+  clusters = nbc(df.values, df.shape[1], FLAGS.k, FLAGS.index_type)
+
+  if FLAGS.output is not None:
+    save_data(FLAGS.output, np.array(clusters))
 
   print(clusters)
 
