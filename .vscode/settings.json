@@ -24,6 +24,7 @@
   "python.linting.mypyEnabled": true,
   "python.analysis.extraPaths": [
     "./src",
-    "./unittest"
+    "./src/utils",
+    "./test"
   ]
 }
