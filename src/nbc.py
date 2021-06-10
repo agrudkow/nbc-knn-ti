@@ -13,12 +13,8 @@ def nbc(data: np.array, dimensions: int, k: int, ti_index: bool = True) -> CLUST
   if ti_index:
     tikni = TIkNeighborhoodIndex(data, dimensions, k)
     knns, r_knns = tikni.run()
-    print('knns: {}'.format(knns[1]))
-    print('r_knns: {}'.format(r_knns[1]))
   else:
     knns, r_knns = k_neighbourhood(data, k)
-    print('knns: {}'.format(knns[1]))
-    print('r_knns: {}'.format(r_knns[1]))
 
   ndf = calc_ndf(knns, r_knns)
 
