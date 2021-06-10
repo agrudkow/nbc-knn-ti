@@ -19,12 +19,11 @@ class TIkNeighborhoodIndex():
     self._dists = self.create_est_dist_list()
 
   def run(self) -> List[List[Tuple[float, int]]]:
-    knns: List[List[Tuple[float, int]]] = []
+    knns = [None] * len(self._data)
 
-    for i, _ in enumerate(self._dists):
-      # _, idx = item
-
-      knns.append(self.ti_k_neighborhood(i))
+    for i, item in enumerate(self._dists):
+      _, idx = item
+      knns[idx] = self.ti_k_neighborhood(i)
 
     return knns
 
@@ -107,13 +106,13 @@ class TIkNeighborhoodIndex():
       if (self._dists[p_idx][0] - self._dists[b_idx][0]) < (self._dists[f_idx][0] - self._dists[p_idx][0]):
         dist = self.calc_real_distance(b_idx, p_idx)
         i += 1
-        insort_right(knn, (dist, b_idx), key=lambda x: x[0])
+        insort_right(knn, (dist, self.get_idx_from_dist(b_idx)), key=lambda x: x[0])
         b_idx, backwardSearch = self.preceding_point(b_idx)
         eps = max(eps, dist)
       else:
         dist = self.calc_real_distance(f_idx, p_idx)
         i += 1
-        insort_right(knn, (dist, f_idx), key=lambda x: x[0])
+        insort_right(knn, (dist, self.get_idx_from_dist(f_idx)), key=lambda x: x[0])
         f_idx, forwardSearch = self.following_point(f_idx)
         eps = max(eps, dist)
 
@@ -131,7 +130,7 @@ class TIkNeighborhoodIndex():
     while backwardSearch and (i < self._k):
       dist = self.calc_real_distance(b_idx, p_idx)
       i += 1
-      insort_right(knn, (dist, b_idx), key=lambda x: x[0])
+      insort_right(knn, (dist, self.get_idx_from_dist(b_idx)), key=lambda x: x[0])
       b_idx, backwardSearch = self.preceding_point(b_idx)
       eps = max(eps, dist)
 
@@ -149,9 +148,9 @@ class TIkNeighborhoodIndex():
     while forwardSearch and (i < self._k):
       dist = self.calc_real_distance(f_idx, p_idx)
       i += 1
-      insort_right(knn, (dist, f_idx), key=lambda x: x[0])
+      insort_right(knn, (dist, self.get_idx_from_dist(f_idx)), key=lambda x: x[0])
       f_idx, forwardSearch = self.following_point(f_idx)
-      eps = max(knn, key=lambda e: e[0])
+      eps = max(eps, dist)
 
     return (knn, f_idx, forwardSearch, i, eps)
 
@@ -165,12 +164,12 @@ class TIkNeighborhoodIndex():
         i = len(i_list)
         if (len(knn) - i) >= (self._k - 1):
           knn = [e for e in knn if e not in i_list]
-          insort_right(knn, (dist, b_idx))
+          insort_right(knn, (dist, self.get_idx_from_dist(b_idx)), key=lambda x: x[0])
           eps = max(eps, dist)
         else:
-          insort_right(knn, (dist, b_idx))
+          insort_right(knn, (dist, self.get_idx_from_dist(b_idx)), key=lambda x: x[0])
       elif dist == eps:
-        insort_right(knn, (dist, b_idx))
+        insort_right(knn, (dist, self.get_idx_from_dist(b_idx)), key=lambda x: x[0])
 
       b_idx, backwardSearch = self.preceding_point(b_idx)
 
@@ -179,19 +178,19 @@ class TIkNeighborhoodIndex():
   def verify_k_condidate_neighbours_forward(self, knn: List[Tuple[float,
                                                                   int]], p_idx: int, f_idx: int, forwardSearch: bool,
                                             eps: float) -> Tuple[List[Tuple[float, int]], int, bool, float]:
-    while forwardSearch and (self._dists[f_idx][0] - self._dists[p_idx][0]) <= eps:
+    while (forwardSearch and (self._dists[f_idx][0] - self._dists[p_idx][0]) <= eps):
       dist = self.calc_real_distance(f_idx, p_idx)
       if dist < eps:
         i_list = [n for n in knn if n[0] == eps]
         i = len(i_list)
         if (len(knn) - i) >= (self._k - 1):
           knn = [e for e in knn if e not in i_list]
-          insort_right(knn, (dist, f_idx))
+          insort_right(knn, (dist, self.get_idx_from_dist(f_idx)), key=lambda x: x[0])
           eps = max(eps, dist)
         else:
-          insort_right(knn, (dist, f_idx))
+          insort_right(knn, (dist, self.get_idx_from_dist(f_idx)), key=lambda x: x[0])
       elif dist == eps:
-        insort_right(knn, (dist, f_idx))
+        insort_right(knn, (dist, self.get_idx_from_dist(f_idx)), key=lambda x: x[0])
 
       f_idx, forwardSearch = self.preceding_point(f_idx)
 
@@ -290,10 +289,10 @@ class TestTIkNeighborhoodIndex(unittest.TestCase):
 
 if __name__ == '__main__':
   # unittest.main()
-  data: List[Tuple[float, ...]] = [(2., 0.), (2., 2.), (1., 1.)]
+  data: List[Tuple[float, ...]] = [(1., 1.), (2., 2.), (3., 3.), (4., 4.), (1., 0.), (0., 1.)]
   dimensions = 2
-  k = 3
+  k = 4
   c = TIkNeighborhoodIndex(data, dimensions, k)
   knns = c.run()
 
-  print(knns)
+  print(knns[3])

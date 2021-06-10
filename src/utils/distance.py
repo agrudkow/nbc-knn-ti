@@ -4,8 +4,8 @@ from typing import Tuple
 import numpy as np
 
 
-def distance(a: Tuple[float, ...], b: Tuple[float, ...]):
-  return np.linalg.norm(np.array(a) - np.array(b))
+def distance(a: Tuple[float, ...], b: Tuple[float, ...]) -> float:
+  return np.linalg.norm(np.array(a) - np.array(b)).item()
 
 
 # -------------------- Test -----------------------------------
