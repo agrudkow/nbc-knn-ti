@@ -2,7 +2,7 @@ from typing import Tuple
 
 import numpy as np
 
-from utils import distance, insort_right
+from utils import distance, insort_right, timing
 from utils.types import KNN, KNNS, R_KNNS
 
 
@@ -16,7 +16,8 @@ class TIkNeighborhoodIndex():
     self._data = data
     self._dists = self.create_est_dist_list()
 
-  def run(self):
+  @timing
+  def run(self, ):
     knns: KNNS = [list() for _ in range(len(self._data))]
     r_knns: R_KNNS = [list() for _ in range(len(self._data))]
 
