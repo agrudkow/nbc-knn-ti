@@ -1,2 +1,5 @@
 # Ignore Python virtual environment
 venv
+
+/**/__pycache__
+/**/.mypy_cache
