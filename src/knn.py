@@ -1,8 +1,9 @@
 from typing import List, Tuple
 import numpy as np
 
-from utils import distance, timing
+from utils import distance
 from utils.types import KNNS, R_KNNS
+from utils.timing import timing
 
 
 @timing

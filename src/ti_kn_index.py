@@ -1,9 +1,11 @@
 from typing import Tuple
+import datetime
 
 import numpy as np
 
-from utils import distance, insort_right, timing
+from utils import distance, insort_right
 from utils.types import KNN, KNNS, R_KNNS
+from utils.timing import timing
 
 
 class TIkNeighborhoodIndex():
@@ -17,11 +19,13 @@ class TIkNeighborhoodIndex():
     self._dists = self.create_est_dist_list()
 
   @timing
-  def run(self, ):
+  def run(self):
     knns: KNNS = [list() for _ in range(len(self._data))]
     r_knns: R_KNNS = [list() for _ in range(len(self._data))]
 
     for i, item in enumerate(self._dists):
+      if i % 100 == 0:
+        print('[LOG] item id: {} time: {}'.format(i, datetime.datetime.now().time()))
       _, idx = item
       knns[idx] = self.ti_k_neighborhood(i)
       for n in knns[idx]:
