@@ -1,10 +1,12 @@
 from typing import List, Tuple
 import numpy as np
 
-from utils.distance import distance
+from utils import distance
 from utils.types import KNNS, R_KNNS
+from utils.timing import timing
 
 
+@timing
 def k_neighbourhood(data: np.ndarray, k: int) -> Tuple[KNNS, R_KNNS]:
   knns: List[List[Tuple[float, int]]] = [list() for _ in range(len(data))]
   r_knns: List[List[int]] = [list() for _ in range(len(data))]
