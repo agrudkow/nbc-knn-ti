@@ -26,7 +26,7 @@ def run_absenteeims():
 
   if FLAGS.index_type == 'ti-kn':
     results_ti_kn = []
-    for k in [5, 10, 25, 50, 100]:
+    for k in [10]:
       t_start = time()
       tikni = TIkNeighborhoodIndex(data, dims, k)
       tikni.run()
@@ -40,7 +40,7 @@ def run_absenteeims():
               fmt='%f')
   else:
     results_kn = []
-    for k in [5, 10, 25, 50, 100]:
+    for k in [10]:
       t_start = time()
       k_neighbourhood(data, k)
       t_end = time()
@@ -60,7 +60,7 @@ def run_uci_har():
 
   if FLAGS.index_type == 'ti-kn':
     results_ti_kn = []
-    for k in [5, 10, 25, 50, 100]:
+    for k in [10]:
       t_start = time()
       tikni = TIkNeighborhoodIndex(data, dims, k)
       tikni.run()
@@ -74,7 +74,7 @@ def run_uci_har():
               fmt='%f')
   else:
     results_kn = []
-    for k in [5, 10, 25, 50, 100]:
+    for k in [10]:
       t_start = time()
       k_neighbourhood(data, k)
       t_end = time()
